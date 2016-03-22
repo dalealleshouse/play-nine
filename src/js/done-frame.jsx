@@ -1,11 +1,15 @@
+// @flow
 import * as React from "react";
 
-interface IDoneFrameProperties {
+type DoneFrameProperties = {
     doneStatus: string;
     resetGame(): void;
 }
 
-export class DoneFrame extends React.Component<IDoneFrameProperties, {}> {
+export class DoneFrame extends React.Component {
+    props: DoneFrameProperties;
+    state: {};
+
     render() {
         return (
             <div className="well text-center">

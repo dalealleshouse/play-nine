@@ -1,14 +1,18 @@
+// @flow
 import * as React from "react";
 
-interface INumberFrameProperties {
+type NumberFrameProperties = {
     selectedNumbers: number[];
     usedNumbers: number[];
     selectNumber: (num: number) => void;
 }
 
-export class NumbersFrame extends React.Component<INumberFrameProperties, {}> {
+export class NumbersFrame extends React.Component {
+  props: NumberFrameProperties;
+  state: {};
     render() {
-        let numbers: JSX.Element[] = Array.apply(null, Array(9))
+      // $FlowFixMe: suppressing this error until we can refactor
+        let numbers: React$Element[] = Array.apply(null, Array(9))
             .map((n: void, i: number) => i + 1)
             .map((i: number) => (
                 <div key={i}
@@ -26,7 +30,8 @@ export class NumbersFrame extends React.Component<INumberFrameProperties, {}> {
         );
     }
 
-    private getNumberClassName(selectedNumbers: number[], usedNumbers: number[], num: number) {
+    getNumberClassName(selectedNumbers: number[], usedNumbers: number[], num: number): string {
+        // $FlowFixMe: suppressing this error until we can refactor
         return `number selected-${selectedNumbers.contains(num)} used-${usedNumbers.contains(num)}`;
     }
 }

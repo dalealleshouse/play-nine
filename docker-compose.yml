@@ -1,0 +1,18 @@
+build:
+  image: docker.kroger.com/library/node
+  volumes:
+    - ./:/src
+  links:
+    - proxy
+  ports:
+    - "3000:3000"
+  command: tail -f /dev/null
+  # command: bash -c "cd /src && npm install && npm run typings && npm run build:client && npm run start"
+  environment:
+    - http_proxy=http://proxy:3128
+    - https_proxy=http://proxy:3128
+    - no_proxy=localhost,127.0.0.1
+proxy:
+  image: docker.kroger.com/digital/squid
+  expose:
+   - 3128

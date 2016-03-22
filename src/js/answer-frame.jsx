@@ -1,11 +1,15 @@
+// @flow
 import * as React from "react";
 
-interface IAnswerFrameProperties {
+type AnswerFrameProperties = {
     selectedNumbers: number[];
     unselectNumber(num: number): void;
 }
 
-export class AnswerFrame extends React.Component<IAnswerFrameProperties, {}> {
+export class AnswerFrame extends React.Component {
+    props: AnswerFrameProperties;
+    state: {};
+    
     render() {
         let numbers = this.props
             .selectedNumbers

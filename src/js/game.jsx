@@ -1,3 +1,4 @@
+// @flow
 import * as React from "react";
 import {DoneFrame} from "./done-frame";
 import {NumbersFrame} from "./numbers-frame";
@@ -5,16 +6,19 @@ import {StarsFrame} from "./stars-frame";
 import {ButtonFrame} from "./button-frame";
 import {AnswerFrame} from "./answer-frame";
 
-interface IGameState {
-    numberOfStars?: number;
-    selectedNumbers?: number[];
-    usedNumbers?: number[];
-    correct?: boolean;
-    redraws?: number;
-    doneStatus?: string;
+type GameState = {
+    numberOfStars: number;
+    selectedNumbers: number[];
+    usedNumbers: number[];
+    correct: ?boolean;
+    redraws: number;
+    doneStatus: ?string;
 }
 
-export class Game extends React.Component<{}, IGameState> {
+export class Game extends React.Component {
+    props: {};
+    state: GameState;
+
     constructor() {
         super();
 
@@ -29,7 +33,8 @@ export class Game extends React.Component<{}, IGameState> {
         };
     }
 
-    selectNumber = (num: number) => {
+    selectNumber: (num: number) => void = (num) => {
+        // $FlowFixMe: suppressing this error until we can refactor
         if (this.state.selectedNumbers.contains(num) || this.state.usedNumbers.contains(num))
             return;
 
@@ -39,14 +44,15 @@ export class Game extends React.Component<{}, IGameState> {
         });
     };
 
-    unselectNumber = (num: number) => {
+    unselectNumber: (num: number) => void = (num) => {
         this.setState({
-            selectedNumbers: this.state.selectedNumbers.remove(num),
-            correct: null
+          // $FlowFixMe: suppressing this error until we can refactor
+          selectedNumbers: this.state.selectedNumbers.remove(num),
+          correct: null
         });
     };
 
-    acceptAnswer = () => {
+    acceptAnswer: () => void = () => {
         this.setState({
             selectedNumbers: [],
             usedNumbers: [...this.state.usedNumbers, ... this.state.selectedNumbers],
@@ -55,7 +61,7 @@ export class Game extends React.Component<{}, IGameState> {
         }, this.updateDoneStatus);
     };
 
-    checkAnswer = () => {
+    checkAnswer: () => void = () => {
         let sumOfSelected = this.state.selectedNumbers.reduce((i, n) => i + n, 0);
         let correct = sumOfSelected === this.state.numberOfStars;
 
@@ -64,7 +70,7 @@ export class Game extends React.Component<{}, IGameState> {
         });
     };
 
-    redraw = () => {
+    redraw: () => void = () => {
         if (this.state.redraws === 0)
             return;
 
@@ -76,7 +82,7 @@ export class Game extends React.Component<{}, IGameState> {
         }, this.updateDoneStatus);
     };
 
-    updateDoneStatus = () => {
+    updateDoneStatus: () => void = () => {
         if (this.state.usedNumbers.length === 9) {
             this.setState({ doneStatus: "You Won!" });
             return;
@@ -87,7 +93,7 @@ export class Game extends React.Component<{}, IGameState> {
         }
     };
 
-    resetGame = () => {
+    resetGame: () => void = () => {
         this.setState({
             selectedNumbers: [],
             usedNumbers: [],
@@ -101,7 +107,7 @@ export class Game extends React.Component<{}, IGameState> {
     render() {
         let {numberOfStars, selectedNumbers, usedNumbers, correct, redraws, doneStatus} = this.state;
 
-        let bottomFrame: JSX.Element = (doneStatus) ?
+        let bottomFrame = (doneStatus) ?
             (<DoneFrame doneStatus={doneStatus}
                 resetGame={this.resetGame} />) :
             (<NumbersFrame selectedNumbers={selectedNumbers}
@@ -129,23 +135,25 @@ export class Game extends React.Component<{}, IGameState> {
         );
     }
 
-    private hasPossibleSolutions() {
+    hasPossibleSolutions():boolean {
         let numberOfStars = this.state.numberOfStars;
         let possibleNumbers = this.getPossibleNumbers();
         return this.possibleCombinationSum(possibleNumbers, numberOfStars);
     }
 
-    private getPossibleNumbers() {
+    getPossibleNumbers():number[] {
+      // $FlowFixMe: suppressing this error until we can refactor
         return Array.apply(null, Array(9))
             .map((n: void, i: number) => i + 1)
+            // $FlowFixMe: suppressing this error until we can refactor
             .filter((i: number) => !this.state.usedNumbers.contains(i));
     }
 
-    private getRandomNumber() {
+    getRandomNumber():number {
         return Math.floor(Math.random() * 9) + 1;
     }
 
-    private possibleCombinationSum(arr: number[], n: number): boolean {
+    possibleCombinationSum(arr: number[], n: number): boolean {
         if (arr.indexOf(n) >= 0) { return true; }
         if (arr[0] > n) { return false; }
         if (arr[arr.length - 1] > n) {

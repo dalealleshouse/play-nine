@@ -1,17 +1,21 @@
+// @flow
 import * as React from "react";
 
-interface IButtonFrameProperties {
+type ButtonFrameProperties = {
     selectedNumbers: number[];
-    correct: boolean;
+    correct: ?boolean;
     checkAnswer(): void;
     acceptAnswer(): void;
     redraw(): void;
     redraws: number;
 }
 
-export class ButtonFrame extends React.Component<IButtonFrameProperties, {}> {
+export class ButtonFrame extends React.Component {
+    props: ButtonFrameProperties;
+    state: {};
+
     render() {
-        let button: JSX.Element = null;
+        let button: ?React$Element = null;
 
         switch (this.props.correct) {
             case true:
