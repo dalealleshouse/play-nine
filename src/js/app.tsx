@@ -1,11 +1,11 @@
 
 declare var require: any;
 
-require("!style!css!../css/styles.css");
-require("jquery");
-require("bootstrap-webpack");
-require("file?name=[name].[ext]!../index.html");
-require("./global");
+import "!style!css!../css/styles.css";
+import "jquery";
+import "bootstrap-webpack";
+import "file?name=[name].[ext]!../index.html";
+import "./global";
 
 import * as React from "react";
 import * as ReactDOM  from "react-dom";
